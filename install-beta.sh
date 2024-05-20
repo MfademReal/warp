@@ -82,9 +82,9 @@ uninstall() {
 # Menu
 menu() {
     clear
-    echo -e "${green}By --> Peyman * Github.com/Ptechgithub * ${rest}"
+    echo -e "${green}By --> Mfadem * ${rest}"
     echo ""
-    echo -e "${yellow}❤️Github.com/${cyan}bepass-org${yellow}/warp-plus❤️${rest}"
+    echo -e "${yellow}❤️ Powered by Github.com/${cyan}bepass-org${yellow}/warp-plus❤️${rest}"
     echo -e "${purple}*********************************${rest}"
     echo -e "${blue}  ###${cyan} Warp-Plus in Ubuntu ${blue}###${rest} ${purple}  * ${rest}"
     echo -e "${purple}*********************************${rest}"
