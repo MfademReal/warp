@@ -45,10 +45,40 @@ install() {
         rm "README.md" "LICENSE" "warp-plus_linux-amd64.zip"
         echo "================================================"
         echo -e "${green}Warp installed successfully.${rest}"
+        create_service
         socks
     else
         echo -e "${red}Error installing Warp.${rest}"
     fi
+}
+
+# Create the service
+create_service() {
+    echo -e "${purple}Creating systemd service...${rest}"
+
+    # Service configuration content
+    SERVICE_CONTENT="[Unit]
+Description=WARP+ VPN Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/warp
+Restart=on-failure
+User=root
+
+[Install]
+WantedBy=multi-user.target"
+
+    # Create the service file
+    echo "$SERVICE_CONTENT" | sudo tee /etc/systemd/system/warpplus.service > /dev/null
+
+    # Reload systemd, enable and start the service
+    sudo systemctl daemon-reload
+    sudo systemctl enable warpplus.service
+    sudo systemctl start warpplus.service
+
+    echo -e "${green}Service created and started successfully.${rest}"
 }
 
 # Get socks config
@@ -69,6 +99,10 @@ socks() {
 uninstall() {
     if [ -f "/usr/local/bin/warp" ]; then
         sudo rm -rf "/usr/local/bin/usef" "/usr/local/bin/warp-plus" "/usr/local/bin/warp"
+        sudo systemctl stop warpplus.service
+        sudo systemctl disable warpplus.service
+        sudo rm /etc/systemd/system/warpplus.service
+        sudo systemctl daemon-reload
         echo -e "${purple}*********************************${rest}"
         echo -e "${red}Uninstallation completed.${rest}"
         echo -e "${purple}*********************************${rest}"
